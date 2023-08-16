@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.IO.Packaging;
 
 namespace gen_web_api_project
 {
@@ -19,7 +20,7 @@ namespace gen_web_api_project
             //if (slnName.Text.Length < 5)
             //    return TaskStatus.WaitingToRun;
 
-            
+
             Process proc = new Process();
 
             string dir = string.Format(@"C:\Users\User\Desktop\projects");
@@ -31,7 +32,7 @@ namespace gen_web_api_project
             proc.StartInfo.CreateNoWindow = true;
             proc.StartInfo.UseShellExecute = false;
             proc.Start();
-         
+
             proc.StandardInput.WriteLine($"mkdir {this.slnName.Text}");
             proc.StandardInput.WriteLine($"cd {this.slnName.Text}");
             proc.StandardInput.WriteLine($"dotnet new sln -n {this.slnName.Text}");
@@ -43,30 +44,33 @@ namespace gen_web_api_project
             proc.StandardInput.WriteLine($"dotnet new classlib -o {this.slnName.Text}.Domain");
             proc.StandardInput.WriteLine($"dotnet new classlib -o {this.slnName.Text}.Core");
             proc.StandardInput.WriteLine($"dotnet new webapi -o {this.slnName.Text}.WebApi");
-                        proc.StandardInput.WriteLine($"cd ..");
-            
+            proc.StandardInput.WriteLine($"cd ..");
+
             proc.StandardInput.WriteLine(@$"dotnet sln {this.slnName.Text}.sln add src\{this.slnName.Text}.Application\{this.slnName.Text}.Application.csproj --solution-folder Application");
             proc.StandardInput.WriteLine(@$"dotnet sln {this.slnName.Text}.sln add src\{this.slnName.Text}.Infraestructure\{this.slnName.Text}.Infraestructure.csproj --solution-folder Infraestructure");
             proc.StandardInput.WriteLine(@$"dotnet sln {this.slnName.Text}.sln add src\{this.slnName.Text}.Core\{this.slnName.Text}.Core.csproj --solution-folder Core");
             proc.StandardInput.WriteLine(@$"dotnet sln {this.slnName.Text}.sln add src\{this.slnName.Text}.Domain\{this.slnName.Text}.Domain.csproj --solution-folder Domain");
             proc.StandardInput.WriteLine(@$"dotnet sln {this.slnName.Text}.sln add src\{this.slnName.Text}.WebApi\{this.slnName.Text}.WebApi.csproj --solution-folder WebApi");
-            
-            proc.StandardInput.WriteLine(@$"dotnet add src\{this.slnName.Text}.WebApi\{this.slnName.Text}.WebApi.csproj package Microsoft.EntityFrameworkCore");
+
+            if (this.addDependencies.Checked)
+            {
+                proc.StandardInput.WriteLine(@$"dotnet add src\{this.slnName.Text}.WebApi\{this.slnName.Text}.WebApi.csproj package Microsoft.EntityFrameworkCore");
+                proc.StandardInput.WriteLine(@$"dotnet add src\{this.slnName.Text}.Application\{this.slnName.Text}.Application.csproj package FluentValidation.AspNetCore");
+                proc.StandardInput.WriteLine(@$"dotnet add src\{this.slnName.Text}.Infraestructure\{this.slnName.Text}.Infraestructure.csproj package Microsoft.EntityFrameworkCore");
+                proc.StandardInput.WriteLine(@$"dotnet add src\{this.slnName.Text}.Infraestructure\{this.slnName.Text}.Infraestructure.csproj package Microsoft.EntityFrameworkCore.Design");
+            }
+
+
             //proc.StandardInput.Close();
 
             //string output = proc.StandardOutput.ReadToEnd();
             proc.Close();
 
             DialogResult result = MessageBox.Show("Aqui acabou!");
-            if ( result == DialogResult.OK )
+            if (result == DialogResult.OK)
                 Application.Exit();
 
 
-
-        }
-
-        private void slnName_TextChanged(object sender, EventArgs e)
-        {
 
         }
     }

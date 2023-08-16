@@ -31,16 +31,19 @@
             submit = new Button();
             label = new Label();
             slnName = new TextBox();
+            addDependencies = new CheckBox();
             SuspendLayout();
             // 
             // submit
             // 
-            submit.Location = new Point(130, 93);
+            submit.BackColor = SystemColors.ControlLight;
+            submit.BackgroundImageLayout = ImageLayout.Center;
+            submit.Location = new Point(241, 83);
             submit.Name = "submit";
             submit.Size = new Size(84, 25);
             submit.TabIndex = 0;
             submit.Text = "Generate";
-            submit.UseVisualStyleBackColor = true;
+            submit.UseVisualStyleBackColor = false;
             submit.Click += submit_Click;
             // 
             // label
@@ -60,13 +63,24 @@
             slnName.PlaceholderText = "Solution Name";
             slnName.Size = new Size(153, 23);
             slnName.TabIndex = 2;
-            slnName.TextChanged += slnName_TextChanged;
+            // 
+            // addDependencies
+            // 
+            addDependencies.AutoSize = true;
+            addDependencies.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
+            addDependencies.Location = new Point(16, 88);
+            addDependencies.Name = "addDependencies";
+            addDependencies.Size = new Size(195, 17);
+            addDependencies.TabIndex = 3;
+            addDependencies.Text = "Adicionar dependências padrões";
+            addDependencies.UseVisualStyleBackColor = true;
             // 
             // MainWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(343, 139);
+            Controls.Add(addDependencies);
             Controls.Add(slnName);
             Controls.Add(label);
             Controls.Add(submit);
@@ -81,5 +95,6 @@
         private Button submit;
         private Label label;
         private TextBox slnName;
+        private CheckBox addDependencies;
     }
 }
